@@ -1,0 +1,658 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Communicating Science to Meet your Audience Need</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: one narrow column, one task per screen. Each step opens with its principle, then the task. */
+:root{
+  --bg:#f1f6f5; --surface:#ffffff; --ink:#0f2a30; --muted:#4f676b; --line:#cbd9d7;
+  --accent:#1b7856; --accent-ink:#ffffff; --accent-soft:#dcefe6;
+  --tide:#266a93; --tide-ink:#ffffff; --tide-soft:#dfecf4;
+  --warn:#a5461d; --warn-soft:#f7e5dc;
+  --s1:#1f77b4; --s2:#ff7f0e; --s3:#2ca02c; --s4:#d62728; --s5:#7f7f7f;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1d21; --surface:#13292e; --ink:#e6f0ee; --muted:#9bb3b6; --line:#2a4449;
+    --accent:#4fc38f; --accent-ink:#06241a; --accent-soft:#17382d;
+    --tide:#7dbbe0; --tide-ink:#06202e; --tide-soft:#183548;
+    --warn:#f0a07a; --warn-soft:#3b2418;
+    --s1:#5aa9e0; --s2:#ffa04a; --s3:#5fd06a; --s4:#f06a6a; --s5:#a9b4b6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1d21; --surface:#13292e; --ink:#e6f0ee; --muted:#9bb3b6; --line:#2a4449;
+  --accent:#4fc38f; --accent-ink:#06241a; --accent-soft:#17382d;
+  --tide:#7dbbe0; --tide-ink:#06202e; --tide-soft:#183548;
+  --warn:#f0a07a; --warn-soft:#3b2418;
+  --s1:#5aa9e0; --s2:#ffa04a; --s3:#5fd06a; --s4:#f06a6a; --s5:#a9b4b6;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:8px 48px}
+.wrap{max-width:640px;margin-inline:auto;display:flex;flex-direction:column;gap:16px;min-width:0}
+h1,h2,h3{font-family:var(--font-display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:1.6rem;font-weight:700}
+h2{font-size:1.25rem;font-weight:700}
+h3{font-size:1rem;font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;flex-direction:column;gap:8px;padding-block:10px;border-bottom:1px solid var(--line)}
+.navrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font:inherit;font-size:.82rem;font-weight:600;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:18px;padding:6px 12px;min-height:36px;cursor:pointer}
+.pill.vis{color:var(--ink);border-color:var(--accent)}
+.pill.cur{background:var(--tide);color:var(--tide-ink);border-color:var(--tide)}
+.pill:disabled{opacity:.5;cursor:not-allowed}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.aud{background:var(--tide-soft);border-color:transparent}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+dl.kv dt{font-weight:600;color:var(--muted);font-size:.85rem}
+dl.kv dd{margin:0;min-width:0}
+.principle{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--tide);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.principle ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px}
+.stage p{font-size:.76rem;color:var(--muted);text-align:center;line-height:1.3;margin-top:6px}
+.chev{background:var(--tide);color:var(--tide-ink);font-weight:600;font-size:.82rem;text-align:center;padding:10px 0;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
+.chev.n{clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%,10px 50%)}
+ol.plist{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.btn{font:inherit;font-weight:600;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:11px 16px;cursor:pointer;min-height:44px}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.sm{padding:6px 12px;min-height:36px;font-size:.88rem}
+.cite a{color:var(--accent);text-decoration:underline}
+.admin{margin-top:28px;padding-top:14px;border-top:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.pick:focus-visible,.tok:focus-visible,.pill:focus-visible,.mv:focus-visible,textarea:focus-visible{outline:3px solid var(--tide);outline-offset:2px}
+.pickgrid{display:flex;flex-direction:column;gap:8px}
+.pick{font:inherit;text-align:left;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:11px 12px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;min-height:44px;width:100%}
+.pick:disabled{cursor:default}
+.pick.sel{border-color:var(--accent);background:var(--accent-soft)}
+.pick.hit{border-color:var(--accent);background:var(--accent-soft)}
+.pick.miss{border-color:var(--warn);border-style:dashed;background:var(--warn-soft)}
+.pick.extra{border-color:var(--warn);background:var(--warn-soft)}
+.pick.fit{border-color:var(--accent)}
+.badge{flex:none;min-width:24px;height:24px;border-radius:12px;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.8rem}
+.pick.sel .badge{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tag{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:1px 6px;color:var(--ink)}
+.tag.ok{background:var(--accent-soft);border:1px solid var(--accent)}
+.tag.bad{background:var(--warn-soft);border:1px solid var(--warn)}
+.tl{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.dd{display:block}
+.orow{display:flex;gap:10px;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-radius:8px;padding:8px 10px}
+.orow.hit{border-color:var(--accent);background:var(--accent-soft)}
+.orow.miss{border-color:var(--warn);background:var(--warn-soft)}
+.orow .otxt{flex:1;min-width:0}
+.mv{font:inherit;font-size:1.1rem;width:44px;height:44px;flex:none;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.mv:disabled{opacity:.35;cursor:default}
+.rate{display:flex;gap:6px}
+.rate .pick{justify-content:center;padding:8px 0;width:auto;flex:1;font-family:var(--font-mono)}
+textarea{font:inherit;width:100%;min-height:64px;resize:vertical;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:8px 10px}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.fig svg{width:100%;height:auto;display:block}
+.fig h3{margin-bottom:6px}
+svg text{fill:var(--ink);font-family:var(--font-body)}
+svg .axl{stroke:var(--line);stroke-width:1}
+svg .mut{fill:var(--muted)}
+.reveal{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.reveal.note{border-left-color:var(--tide);background:var(--tide-soft)}
+.reveal.bad{border-left-color:var(--warn);background:var(--warn-soft)}
+.para{line-height:1.95;font-size:1rem}
+.tok{cursor:pointer;border-bottom:1.5px dotted var(--muted);padding-block:1px;border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.tok:hover{background:var(--tide-soft)}
+.tok.cut{text-decoration:line-through;color:var(--muted);opacity:.7;border-bottom-color:transparent}
+.tok.ok{border-bottom:2px solid var(--accent)}
+.tok.miss,.tok.lost{background:var(--warn-soft);border-bottom:2px solid var(--warn)}
+.tok.opt{border-bottom:2px dashed var(--muted)}
+.tok[aria-disabled="true"]{cursor:default}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;margin-right:5px;border-radius:2px;vertical-align:baseline}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+th{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.n{font-family:var(--font-mono);text-align:center;font-variant-numeric:tabular-nums}
+td.sug{background:var(--accent-soft)}
+.cite{font-size:.78rem;color:var(--muted)}
+@media (prefers-reduced-motion: no-preference){ .reveal,.aud{animation:rise .25s ease-out} @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}} }
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- principles (shown on every step) ---------- */
+var PRIN = [
+  {n:1,name:"Know your audience",
+   short:"Who is listening, and what do they need?",
+   line:"Start with who is listening: what they already know, what they want to know, and what it changes for them.",
+   tips:["Separate what they need to know from what is nice to know.","Ask what this reader will do with each statement."]},
+  {n:2,name:"Lead with what they need",
+   short:"Put the most important information first.",
+   line:"Put the most important information first. What counts as most important depends on who is listening.",
+   tips:[]},
+  {n:3,name:"Show one message per figure",
+   short:"Match the figure to the audience.",
+   line:"Decide what the figure should tell this audience, then design everything around that message.",
+   tips:["Match detail to the audience. A graph in a paper should be different from a graph on a slide.","Make it legible at the expected reading distance. Enlarge text and labels.","Use an intuitive label or legend approach so the audience can interpret it easily."]},
+  {n:4,name:"Clearly state the takeaway",
+   short:"Let the title carry the result.",
+   line:"The title is the first thing the audience reads, so let it carry the message.",
+   tips:["Write the title as a sentence that states the finding, not the axes.","Include the number and the condition that matter.","Claim only what the data shows."]},
+  {n:5,name:"Cut what they don't need",
+   short:"Keep what this reader will use.",
+   line:"Every sentence either helps this reader or competes for their attention.",
+   tips:["Cut filler such as “It should be noted that…”.","Cut details this audience will not use, even when they are true and matter to someone else."]}
+];
+function panel(n,extra){
+  var p=PRIN[n-1];
+  return '<section class="principle"><span class="label">Principle '+n+' of 5</span><p><strong>'+p.line+'</strong></p>'+
+    (p.tips.length?'<ul>'+p.tips.map(function(t){return '<li>'+t+'</li>';}).join("")+'</ul>':"")+(extra||"")+'</section>';
+}
+function stageGraphic(){
+  var st=[["Lead","What they need first"],["Support","The evidence they will use"],["Limits","What is uncertain"],["Ask","What you want them to do"]];
+  return '<div class="stages" aria-label="Lead, then support, then limits, then ask">'+st.map(function(s,i){return '<div class="stage"><div class="chev'+(i?" n":"")+'">'+s[0]+'</div><p>'+s[1]+'</p></div>';}).join("")+'</div>'+
+    '<p class="muted">Not every audience needs every stage. A reviewer needs your methods first; a planner needs the result and the cost.</p>';
+}
+
+/* ---------- content ---------- */
+var AUD = {
+  peer:{name:"Peer reviewer",
+    know:"Methods and statistics",
+    want:"Is the result rigorous and reproducible?",
+    change:"Whether the work is accepted or cited",
+    order:["B","C","D","H"], stg:{B:"Lead",C:"Support",D:"Limits",H:"Ask"},
+    need:"A reviewer judges rigor: how it was measured (B), what the result is (C), where it is limited (D), and the next step (H). They already know the background (A), and cost and community effects (E, F, G) are outside what they judge.",
+    why:"They judge rigor, so show how you measured, then the result, then its limits, then the ask. For a reviewer, what they need first is how you measured, which is why papers put methods before results."},
+  pm:{name:"Program manager (funder)",
+    know:"They funded the study and know its goals, not the technical details",
+    want:"Did the study deliver, what is still uncertain, and what would more funding buy?",
+    change:"Whether to continue, expand, or end the funding",
+    order:["C","D","I","H"], stg:{C:"Lead",D:"Limits",I:"Ask",H:"Ask"},
+    need:"A funder decides whether to keep funding: the result (C), what is still uncertain, which here is the winter benefit (D), what continued funding would buy (I), and the recommendation (H). Methods (B) are detail they will not weigh, and cost to build (E) is the local government's decision.",
+    why:"Lead with what the funding delivered, then what is still unresolved, then what more funding would buy. The winter gap is the reason to continue."},
+  ldm:{name:"Local decision-maker",
+    know:"Their community, budget, and politics",
+    want:"Will it work here, what does it cost, and what is the risk?",
+    change:"A vote or plan",
+    order:["C","E","F","D","H"], stg:{C:"Lead",E:"Support",F:"Support",D:"Limits",H:"Ask"},
+    need:"A decision-maker needs the result (C), the cost (E), the time to benefit (F), the risk (D), and the ask (H) before voting.",
+    why:"Result first, then cost and timeline, then the risk, then the ask. A vote needs all four."},
+  comm:{name:"Community member",
+    know:"Their own shoreline, as a resident or shellfish grower",
+    want:"What does this mean for my beach, my home, my harvest?",
+    change:"Whether they support or oppose the project",
+    order:["G","C","F","H"], stg:{G:"Lead",C:"Support",F:"Support",H:"Ask"},
+    need:"Residents and growers care about their shoreline: local effects (G), the result as support (C), how long it takes (F), and what happens next (H). Methods (B) and uncertainty details (D) are for other audiences.",
+    why:"Open with what it means for their shoreline. Show the result as support, not the headline, then how long it takes, then what happens next."}
+};
+var AUD_KEYS = ["peer","pm","ldm","comm"];
+var CARDS = {
+  A:{t:"Background",d:"Why eelgrass affects waves"},
+  B:{t:"Methods",d:"How waves were measured"},
+  C:{t:"Key result",d:"Wave height vs. distance"},
+  D:{t:"Uncertainty and limits",d:"Smaller winter benefit, only one winter measured"},
+  E:{t:"Cost",d:"Compared with a seawall"},
+  F:{t:"Timeline",d:"Time to benefit; the bed takes years to establish"},
+  G:{t:"Local effects",d:"Beach, shellfish, fishing"},
+  H:{t:"Recommendation",d:"Next steps"},
+  I:{t:"Research needs and funds to continue",d:"One additional winter of monitoring"}
+};
+var KEYS = Object.keys(CARDS);
+var SCOPE = [
+  ["Study","A team compared wave height behind a restored eelgrass bed with a nearby bare site."],
+  ["Methods","Pressure sensors recorded waves along 100 m transects across both sites, from May of year 1 through September of year 2: two summers and one winter."],
+  ["Result","In summer, waves at the shoreline were about 30% lower behind the eelgrass (0.33 m vs. 0.47 m)."],
+  ["Caveat","The benefit was smaller and more variable in winter, and winter had one season of data compared with two for summer."],
+  ["Next phase","One additional winter of monitoring would show whether the winter benefit holds."]
+];
+
+var TITLES = [
+  {id:"A",t:"Wave height vs. distance from bed edge",why:"Describes the axes but does not say what the result is."},
+  {id:"B",t:"Eelgrass is better than a seawall",why:"The data does not support this. The study never compared the two."},
+  {id:"C",t:"Eelgrass cut summer shoreline wave height by about 30%",why:"States the result, the season, and the size of the effect.",ok:true},
+  {id:"D",t:"Eelgrass reduces waves substantially",why:"Vague. “Substantially” gives the reader no number."}
+];
+
+var ALL = AUD_KEYS;
+var CHIPS = [
+  {id:1,t:"In order to better understand the potential role of nature-based solutions in coastal protection, it is important to note that a comprehensive study was carried out.",k:"f"},
+  {id:2,t:"Wave height was measured along a 100 m transect at a restored eelgrass bed and a nearby bare site.",need:["peer","pm","ldm"]},
+  {id:3,t:"Pressure sensors recorded waves in summer and winter at both low and high tide (n = 6 summer and 3 winter transects).",need:["peer"]},
+  {id:4,t:"It should be emphasized that, overall, the results clearly demonstrate that",k:"f"},
+  {id:5,t:"summer wave height at the shoreline was about 30% lower behind the eelgrass (0.33 m vs. 0.47 m).",need:ALL},
+  {id:6,t:"This is, on the whole, quite an interesting and noteworthy outcome.",k:"f"},
+  {id:7,t:"In winter the reduction was smaller, 9% to 17% depending on tide, because the shoots die back. Only one winter was measured.",need:["peer","pm","ldm"]},
+  {id:8,t:"Early estimates suggest that restoring a bed would cost less than building a seawall of similar length.",need:["pm","ldm"]},
+  {id:9,t:"The bed takes several years to establish before the full benefit appears.",need:["ldm","comm"]},
+  {id:10,t:"Eelgrass also provides nursery habitat, so nearby beaches and shellfish harvest could be affected.",need:["comm"]},
+  {id:11,t:"Interestingly, it is also worth mentioning that there are many additional factors that could potentially be considered.",k:"f"},
+  {id:14,t:"Confirming the winter benefit needs one additional winter of monitoring.",need:["pm"]},
+  {id:12,t:"We recommend a multi-year pilot bed with winter monitoring.",need:ALL},
+  {id:13,t:"These findings may have important implications for future coastal management and planning efforts going forward.",k:"f"}
+];
+function kind(c,aud){ if(c.k==="f") return "f"; return c.need.indexOf(aud)>=0 ? "n" : "o"; }
+function wc(s){ var m=s.trim().match(/\S+/g); return m?m.length:0; }
+var TOTAL_WORDS = CHIPS.reduce(function(a,c){return a+wc(c.t);},0);
+
+/* ---------- figure data (fictional) ---------- */
+var DIST=[0,20,40,60,80,100];
+var BARE=[.50,.50,.49,.48,.48,.47];
+var SL=[.50,.44,.39,.36,.32,.29], SH=[.50,.46,.43,.40,.38,.37], WL=[.50,.48,.45,.43,.41,.39], WH=[.50,.48,.46,.45,.44,.43];
+var SUM=[.50,.45,.41,.38,.35,.33];
+var ERR=[.03,.03,.03,.04,.04,.04];
+function pathG(xf,yf,arr){return arr.map(function(v,i){return (i?"L":"M")+xf(DIST[i]).toFixed(1)+" "+yf(v).toFixed(1);}).join(" ");}
+
+var ERRS={b:[.02,.02,.02,.02,.02,.02], s:[.01,.012,.012,.015,.015,.015], w:[.03,.04,.05,.05,.055,.06]};
+/* Figure A: distributions at the shoreline, by season. Box = middle 50%, line = median, whiskers = range. Axis starts at 0. */
+var BOX={
+  sumBare:[.42,.45,.47,.49,.52], sumEel:[.28,.31,.33,.35,.38],
+  winBare:[.31,.41,.47,.53,.62], winEel:[.26,.37,.41,.48,.57]
+};
+function figA(){
+  var YY=function(v){return 200-v*212;};
+  var s='<svg viewBox="0 0 360 232" role="img" aria-label="Box plots of shoreline wave height by season. In summer the eelgrass box sits well below the bare site and the boxes are narrow. In winter the boxes are wide and overlap.">';
+  [0,0.2,0.4,0.6,0.8].forEach(function(v){ s+='<line class="axl" x1="56" x2="340" y1="'+YY(v)+'" y2="'+YY(v)+'"/><text x="50" y="'+(YY(v)+3.5)+'" text-anchor="end" style="font-size:10px">'+(v===0?"0":v.toFixed(1))+'</text>'; });
+  s+='<line x1="56" x2="340" y1="200" y2="200" style="stroke:var(--ink);stroke-width:1.5"/>';
+  s+='<text transform="translate(12 115) rotate(-90)" text-anchor="middle" style="font-size:10px">Wave height at shoreline (m)</text>';
+  s+='<rect x="56" y="6" width="9" height="9" fill="var(--muted)" fill-opacity=".3" stroke="var(--muted)" stroke-width="1.5"/><text x="69" y="14" style="font-size:10px">Bare site</text>';
+  s+='<rect x="130" y="6" width="9" height="9" fill="var(--accent)" fill-opacity=".3" stroke="var(--accent)" stroke-width="1.5"/><text x="143" y="14" style="font-size:10px">Eelgrass</text>';
+  function box(cx,b,col){
+    var w=30, x=cx-w/2;
+    return '<line x1="'+cx+'" x2="'+cx+'" y1="'+YY(b[4])+'" y2="'+YY(b[0])+'" stroke="'+col+'" stroke-width="1.5"/>'+
+      '<line x1="'+(cx-7)+'" x2="'+(cx+7)+'" y1="'+YY(b[4])+'" y2="'+YY(b[4])+'" stroke="'+col+'" stroke-width="1.5"/>'+
+      '<line x1="'+(cx-7)+'" x2="'+(cx+7)+'" y1="'+YY(b[0])+'" y2="'+YY(b[0])+'" stroke="'+col+'" stroke-width="1.5"/>'+
+      '<rect x="'+x+'" y="'+YY(b[3])+'" width="'+w+'" height="'+(YY(b[1])-YY(b[3]))+'" fill="'+col+'" fill-opacity=".3" stroke="'+col+'" stroke-width="1.5"/>'+
+      '<line x1="'+x+'" x2="'+(x+w)+'" y1="'+YY(b[2])+'" y2="'+YY(b[2])+'" stroke="'+col+'" stroke-width="3"/>';
+  }
+  s+=box(110,BOX.sumBare,"var(--muted)")+box(165,BOX.sumEel,"var(--accent)")+box(240,BOX.winBare,"var(--muted)")+box(295,BOX.winEel,"var(--accent)");
+  s+='<text x="137" y="216" text-anchor="middle" style="font-size:11px;font-weight:600">Summer</text><text x="268" y="216" text-anchor="middle" style="font-size:11px;font-weight:600">Winter</text>';
+  s+='';
+  return s+'</svg>';
+}
+/* Figure B: distance profile with error bars. Axis from 0. Summer error bars are small; winter ones are large. */
+function figB(){
+  var X=function(d){return 46+d*2.9;}, YY=function(v){return 205-v*275;};
+  var s='<svg viewBox="0 0 360 240" role="img" aria-label="Line chart of wave height against distance with error bars. Summer error bars are small. Winter error bars are large and overlap.">';
+  s+='<text x="8" y="12" style="font-size:9px;font-weight:600">Wave height vs. distance</text>';
+  var leg=[["Bare","s5"],["Summer low","s1"],["Summer high","s2"],["Winter low","s3"],["Winter high","s4"]];
+  leg.forEach(function(l,i){ var x=8+i*70; s+='<rect x="'+x+'" y="18" width="8" height="3" fill="var(--'+l[1]+')"/><text x="'+(x+11)+'" y="23" style="font-size:6.5px">'+l[0]+'</text>'; });
+  [0,0.1,0.2,0.3,0.4,0.5,0.6].forEach(function(v){ s+='<line class="axl" x1="46" x2="336" y1="'+YY(v)+'" y2="'+YY(v)+'"/><text x="42" y="'+(YY(v)+2)+'" text-anchor="end" style="font-size:6px">'+v.toFixed(2)+'</text>'; });
+  DIST.forEach(function(d){ s+='<text x="'+X(d)+'" y="216" text-anchor="middle" style="font-size:6px">'+d+'</text>'; });
+  s+='<text x="191" y="230" text-anchor="middle" class="mut" style="font-size:6px">distance (m)</text>';
+  s+='<text x="8" y="36" class="mut" style="font-size:6px">Hs (m)</text>';
+  [[BARE,"s5","b"],[SL,"s1","s"],[SH,"s2","s"],[WL,"s3","w"],[WH,"s4","w"]].forEach(function(se){
+    s+='<path d="'+pathG(X,YY,se[0])+'" fill="none" stroke="var(--'+se[1]+')" stroke-width="1.2"/>';
+    se[0].forEach(function(v,i){ if(i===0) return; var x=X(DIST[i]); s+='<line x1="'+x+'" x2="'+x+'" y1="'+YY(v+(ERRS[se[2]][i]))+'" y2="'+YY(v-(ERRS[se[2]][i]))+'" stroke="var(--'+se[1]+')" stroke-width=".8"/><circle cx="'+x+'" cy="'+YY(v)+'" r="1.6" fill="var(--'+se[1]+')"/>'; });
+  });
+  return s+'</svg>';
+}
+/* Figures C and D share one layout. C starts the y-axis at 0. D starts it at 0.30 (the deliberate error). */
+function figClean(ymin,ymax,ticks,label){
+  var X=function(d){return 56+d*2.2;}, k=180/(ymax-ymin), YY=function(v){return 200-(v-ymin)*k;};
+  var s='<svg viewBox="0 0 360 240" role="img" aria-label="'+label+'">';
+  ticks.forEach(function(v){ s+='<line class="axl" x1="56" x2="276" y1="'+YY(v)+'" y2="'+YY(v)+'"/><text x="50" y="'+(YY(v)+4)+'" text-anchor="end" style="font-size:11px">'+(ymin===0?(v===0?"0":v):v.toFixed(2))+'</text>'; });
+  s+='<line x1="56" x2="276" y1="200" y2="200" style="stroke:var(--ink);stroke-width:1.5"/>';
+  [0,50,100].forEach(function(d){ s+='<text x="'+X(d)+'" y="216" text-anchor="middle" style="font-size:11px">'+d+'</text>'; });
+  s+='<text x="166" y="233" text-anchor="middle" style="font-size:11px">Distance from bed edge (m)</text>';
+  s+='<text transform="translate(13 110) rotate(-90)" text-anchor="middle" style="font-size:11px">Wave height (m)</text>';
+  s+='<path d="'+pathG(X,YY,BARE)+'" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+='<path d="'+pathG(X,YY,SUM)+'" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+='<text x="284" y="'+(YY(.47)-1)+'" style="font-size:12px;font-weight:600;fill:var(--muted)">Bare site</text><text x="284" y="'+(YY(.47)+13)+'" class="mono" style="font-size:11px;fill:var(--muted)">0.47 m</text>';
+  s+='<text x="284" y="'+(YY(.33)-1)+'" style="font-size:12px;font-weight:600;fill:var(--accent)">Eelgrass</text><text x="284" y="'+(YY(.33)+13)+'" class="mono" style="font-size:11px;fill:var(--accent)">0.33 m</text>';
+  return s+'</svg>';
+}
+function figC(){ return figClean(0,0.6,[0,0.2,0.4,0.6],"Line chart with the y-axis starting at zero: summer wave height falls with distance behind the eelgrass, while the bare site stays near 0.5 metres"); }
+function figD(){ return figClean(0.30,0.50,[0.30,0.40,0.50],"Line chart of summer wave height with the y-axis starting at 0.30 metres"); }
+var FIG_TITLE="Summer waves are lower behind the eelgrass";
+
+/* ---------- state ---------- */
+function store(k,v){ try{ if(v===undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k,v);}catch(e){ return null; } }
+var S = {
+  step:"intro", hist:[], vis:{intro:true},
+  aud: store("aud") || "",
+  rid: store("rid") || ("r"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)),
+  sel:[], order:[], oi:false, notes:{A:"",B:"",C:"",D:""}, pick:"", ctitle:"", struck:[],
+  rev:{}, all:[], dbOn:false, saved:""
+};
+store("rid",S.rid);
+if(AUD_KEYS.indexOf(S.aud)<0) S.aud="";
+var STEPS=[["intro","Start"],["sel","1 Audience"],["order","2 Lead"],["figures","3 Figures"],["title","4 Title"],["fluff","5 Cut"],["recap","Recap"]];
+
+/* ---------- shared results (notes are never saved) ---------- */
+var db=null, writing=Promise.resolve();
+function doc(){ return {aud:S.aud,sel:S.sel,order:S.order,pick:S.pick,ctitle:S.ctitle,struck:S.struck,rev:S.rev}; }
+function save(){
+  if(!db || !S.aud || !Object.keys(S.rev).length) return;
+  var d=doc(), j=JSON.stringify(d);
+  if(j===S.saved) return;
+  S.saved=j;
+  writing=writing.then(function(){ return db.doc("responses/"+S.rid).set(d); }).catch(function(){});
+}
+if(window.claude && window.claude.use){
+  window.claude.use("db").then(function(x){
+    if(!x) return;
+    db=x; S.dbOn=true;
+    try{
+      db.collection("responses").onSnapshot(function(snap){
+        S.all=snap.docs.map(function(d){return d.data();});
+        if(S.step==="results") render();
+      },function(){ S.dbOn=false; });
+    }catch(e){ S.dbOn=false; }
+    save();
+  }).catch(function(){});
+}
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function audCard(){
+  var a=AUD[S.aud];
+  return '<section class="card aud"><span class="label">Your audience</span><h2>'+a.name+'</h2><dl class="kv">'+
+    '<dt>They know</dt><dd>'+a.know+'</dd><dt>They want to know</dt><dd>'+a.want+'</dd><dt>It changes</dt><dd>'+a.change+'</dd></dl></section>';
+}
+function scopeLine(){ return '<p class="muted"><strong>Study:</strong> Summer shoreline waves were about 30% lower behind restored eelgrass (0.33 m vs. 0.47 m). The benefit was smaller and more variable in winter, and winter had one season of data compared with two for summer.</p>'; }
+function syncOrder(){
+  if(!S.oi){ S.order=AUD[S.aud].order.slice(); S.oi=true; }
+}
+function restart(){
+  var old=S.rid;
+  if(db && Object.keys(S.rev).length){ writing=writing.then(function(){ return db.doc("responses/"+old).delete(); }).catch(function(){}); }
+  var cur=S.aud, pool=AUD_KEYS.filter(function(k){return k!==cur;});
+  S.aud=pool[Math.floor(Math.random()*pool.length)];
+  S.rid="r"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+  S.sel=[]; S.order=[]; S.oi=false; S.notes={A:"",B:"",C:"",D:""}; S.pick=""; S.ctitle=""; S.struck=[]; S.rev={}; S.saved="";
+  S.hist=[]; S.vis={intro:true}; S.step="intro";
+  store("aud",S.aud); store("rid",S.rid);
+}
+function clearAll(){
+  if(!db) return Promise.resolve();
+  return db.collection("responses").get().then(function(snap){
+    return Promise.all(snap.docs.map(function(d){ return db.doc("responses/"+d.id).delete(); }));
+  });
+}
+function header(){
+  var onRes=S.step==="results";
+  var back=S.hist.length?'<button class="btn ghost sm" data-a="back">← Back</button>':'<span></span>';
+  var right=onRes?'':'<button class="btn ghost sm" data-a="go" data-v="results">Group results</button>';
+  var mid=(["sel","order","figures","title","fluff"].indexOf(S.step)>=0)?'<button class="btn ghost sm" data-a="reset">Reset</button>':'';
+  var pills="";
+  if(!onRes && S.aud){
+    pills='<nav class="pills" aria-label="Activity steps">'+STEPS.map(function(s){
+      var cur=s[0]===S.step, vis=!!S.vis[s[0]];
+      return '<button class="pill'+(cur?" cur":(vis?" vis":""))+'" data-a="go" data-v="'+s[0]+'"'+(vis?"":" disabled")+(cur?' aria-current="step"':"")+'>'+s[1]+'</button>';
+    }).join("")+'</nav>';
+  }
+  return '<header><div class="navrow">'+back+mid+right+'</div>'+pills+'</header>';
+}
+function go(step){
+  if(step!=="intro" && step!=="results" && !S.aud) step="intro";
+  if(step==="order") syncOrder();
+  if(step!==S.step) S.hist.push(S.step);
+  S.step=step; S.vis[step]=true; render(); window.scrollTo(0,0);
+}
+function back(){ var p=S.hist.pop(); if(p){ S.step=p; render(); window.scrollTo(0,0); } }
+
+/* ---------- screens ---------- */
+function vIntro(){
+  var scope='<section class="card"><span class="label">Study scope</span><dl class="kv">'+SCOPE.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>';}).join("")+'</dl><p class="muted">Numbers in this activity are made up for practice.</p></section>';
+  var prac='<section class="card"><span class="label">What you will practice</span><ol class="plist">'+PRIN.map(function(p){return '<li><strong>'+p.name+'</strong><br><span class="muted">'+p.short+'</span></li>';}).join("")+'</ol></section>';
+  var h='<h1>Communicating Science to Meet your Audience Need</h1>'+scope+prac+
+    '<p class="muted">You will present this result to one audience. Press the button to find out which. About 10 minutes, no names collected.</p>'+
+    '<button class="btn" data-a="assign">Randomly assign audience</button>';
+  if(S.aud) h+=audCard()+'<button class="btn" data-a="go" data-v="sel">Start</button>';
+  h+='<div class="admin"><button class="btn ghost sm" data-a="clearAll">'+(S.confirmClear?'Tap again to clear all group results':'Clear group results (Admin)')+'</button>'+(S.cleared?'<p class="muted">Group results cleared.</p>':'')+'</div>';
+  return h;
+}
+
+function vSel(){
+  var a=AUD[S.aud], done=!!S.rev.sel;
+  var cards=KEYS.map(function(k){
+    var on=S.sel.indexOf(k)>=0, need=a.order.indexOf(k)>=0, cls="pick", tag="";
+    if(on) cls+=" sel";
+    if(done){
+      if(on&&need){cls+=" hit"; tag='<span class="tag ok">Needed</span>';}
+      else if(on){cls+=" extra"; tag='<span class="tag bad">Not needed</span>';}
+      else if(need){cls+=" miss"; tag='<span class="tag bad">Needed, not marked</span>';}
+    }
+    return '<button class="'+cls+'" data-a="sel" data-v="'+k+'"'+(done?" disabled":"")+' aria-pressed="'+on+'"><span class="badge">'+(on?"✓":"")+'</span><span><span class="tl"><strong>'+CARDS[k].t+'</strong>'+tag+'</span><span class="muted dd">'+CARDS[k].d+'</span></span></button>';
+  }).join("");
+  var h='<h2>1. Know your audience</h2>'+panel(1)+
+    '<p class="muted">Tap every type of statement your audience needs to hear. Leave out the ones they do not. You will put them in order next.</p>'+audCard()+scopeLine()+'<div class="pickgrid">'+cards+'</div>';
+  if(!done){
+    h+='<button class="btn" data-a="checkSel"'+(S.sel.length>=2?"":" disabled")+'>Check my picks ('+S.sel.length+' marked)</button>';
+  } else {
+    var hits=S.sel.filter(function(k){return a.order.indexOf(k)>=0;}).length, extra=S.sel.length-hits;
+    h+='<div class="reveal"><h3>You marked '+hits+' of the '+a.order.length+' categories this audience needs'+(extra?', plus '+extra+' they do not':'')+'</h3><p>'+a.need+'</p>'+
+      '<p class="muted">For each category, ask what this reader would do with it.</p></div>'+
+      '<button class="btn" data-a="go" data-v="order">Next: put them in order</button>';
+  }
+  return h;
+}
+
+function vOrder(){
+  syncOrder();
+  var a=AUD[S.aud], done=!!S.rev.order, n=S.order.length;
+  var rows=S.order.map(function(k,i){
+    var tag="", rc="";
+    if(done){ var p=a.order.indexOf(k), right=(p===i); rc=right?" hit":" miss";
+      tag=p>=0?'<span class="tag '+(right?'ok':'bad')+'">'+(right?'Right spot':'Suggested #'+(p+1))+' · '+a.stg[k]+'</span>':'<span class="tag bad">Not in suggested set</span>'; }
+    return '<div class="orow'+rc+'"><span class="badge">'+(i+1)+'</span><span class="otxt"><span class="tl"><strong>'+CARDS[k].t+'</strong>'+tag+'</span><span class="muted dd">'+CARDS[k].d+'</span></span>'+
+      '<button class="mv" data-a="mv" data-v="'+k+'" data-d="-1" aria-label="Move '+CARDS[k].t+' up"'+(done||i===0?" disabled":"")+'>↑</button>'+
+      '<button class="mv" data-a="mv" data-v="'+k+'" data-d="1" aria-label="Move '+CARDS[k].t+' down"'+(done||i===n-1?" disabled":"")+'>↓</button></div>';
+  }).join("");
+  var h='<h2>2. Lead with what they need</h2>'+panel(2,stageGraphic())+
+    '<p class="muted">Use the arrows to put the categories in the order this audience needs them, first to last.</p>'+audCard()+scopeLine()+'<div class="pickgrid">'+rows+'</div>';
+  if(!done){
+    h+='<button class="btn" data-a="checkOrder">Check my order</button>';
+  } else {
+    var sug=a.order, su=S.order.filter(function(k){return sug.indexOf(k)>=0;}), ss=sug.filter(function(k){return S.order.indexOf(k)>=0;}), m=0;
+    su.forEach(function(k,i){ if(k===ss[i]) m++; });
+    var parts=[], last="";
+    sug.forEach(function(k){ var s=a.stg[k]; if(s===last){ parts[parts.length-1].items.push(CARDS[k].t); } else { parts.push({s:s,items:[CARDS[k].t]}); last=s; } });
+    h+='<div class="reveal"><h3>Suggested order</h3><p>'+parts.map(function(p){return '<strong>'+p.s+'</strong>: '+p.items.join(", ");}).join(" → ")+'</p><p>'+a.why+'</p>'+
+      (su.length?'<p>'+m+' of your '+su.length+' shared categories are in the same relative position as the suggestion.</p>':'')+
+      '<p class="muted">Other orders can work. The point is that the order changes with the audience.</p></div>'+
+      '<button class="btn" data-a="go" data-v="figures">Next: figures</button>';
+  }
+  return h;
+}
+
+function figCard(k,svg,title,done){
+  return '<div class="fig"><h3>Figure '+k+'</h3>'+(title?'<p style="margin-bottom:6px;font-weight:600">'+title+'</p>':'')+svg+
+    '<label class="label" for="note-'+k+'" style="display:block;margin-top:10px">Your notes</label>'+
+    '<textarea id="note-'+k+'" data-note="'+k+'" rows="2" placeholder="Optional. Private to you, not saved or shared.">'+esc(S.notes[k])+'</textarea></div>';
+}
+function vFigures(){
+  var done=!!S.rev.figures, a=AUD[S.aud];
+  var h='<h2>3. Show one message per figure</h2>'+panel(3)+
+    '<p class="muted">Jot down what you notice about each figure. Then choose the one you would show your audience.</p>'+audCard()+
+    figCard("A",figA(),"",done)+figCard("B",figB(),"",done)+figCard("C",figC(),FIG_TITLE,done)+figCard("D",figD(),FIG_TITLE,done)+
+    '<h3>Which figure would you show this audience?</h3><div class="pickgrid">'+
+    ["A","B","C","D"].map(function(o){ return '<button class="pick'+(S.pick===o?" sel":"")+'" data-a="pick" data-v="'+o+'"'+(done?" disabled":"")+'><span class="badge"></span><span>Figure '+o+'</span></button>'; }).join("")+'</div>';
+  if(!done){
+    h+='<button class="btn" data-a="checkFig"'+(S.pick?"":" disabled")+'>Check my pick</button>';
+  } else {
+    var msg, extra='<p class="muted">The detail in Figures A and B is not wrong. It belongs where the audience needs to check it.</p>';
+    if(S.pick==="D"){ msg="Figure D is not the right choice for this audience, or for any audience. See below."; extra=""; }
+    else if(S.aud==="peer"){
+      msg = S.pick==="A" ? "Figure A fits a reviewer when the point is how the data vary by season. The summer boxes are narrow, the winter boxes are wide and overlap, and a reviewer will look for that."
+          : S.pick==="B" ? "Figure B fits a reviewer when the point is how wave height changes with distance from the bed, with error bars to judge the spread."
+          : "Figure C is clear, but it leaves out the spread and the winter results. A reviewer needs those, so it suits a slide better than a paper.";
+      if(S.pick!=="C") extra='<p>Figure A shows spread by season. Figure B shows wave height at a distance from the shoreline. Either can be right for a reviewer. It depends on what that section of the paper or presentation is trying to communicate.</p>';
+    } else if(S.aud==="pm"){
+      msg = S.pick==="A" ? "Figure A fits a funder. The summer result is clear, and the wide, overlapping winter boxes show why one more winter of monitoring is needed."
+          : S.pick==="B" ? "Figure B shows how waves change with distance, but the winter error bars overlap so much that the gap is hard to see. A funder would struggle to find the case for continued funding in it."
+          : "Figure C is clear, but it shows summer only. The winter gap, which is the reason to continue funding, is missing.";
+      if(S.pick==="A") extra='<p class="muted">Figure C is the better choice when the message is only the summer result.</p>';
+    } else {
+      msg = S.pick==="C" ? "Figure C fits this audience. One line per site, labels on the lines, and a title that states the point. Keep Figures A and B ready for questions."
+          : S.pick==="A" ? "Figure A is accurate, but it asks this audience to read spread and distributions. They would spend their time decoding the boxes instead of hearing the result. Figure C serves them better."
+          : "Figure B is too dense for this audience: five lines and overlapping error bars. They would spend their time decoding the legend. Figure C serves them better.";
+    }
+    h+='<div class="reveal"><h3>For a '+a.name.toLowerCase()+'</h3><p>'+msg+'</p>'+extra+'</div>'+
+      (S.pick==="D"?'<div class="reveal bad"><h3>What is wrong with Figure D</h3><p>Figure D looks clean, but its y-axis starts at 0.30 m instead of 0. That makes a 30% reduction look like roughly an 80% reduction. The error misleads every audience, including reviewers, and a polished look makes it easy to miss.</p></div>':'')+
+      '<button class="btn" data-a="go" data-v="title">Next: chart title</button>';
+  }
+  return h;
+}
+
+function vTitle(){
+  var done=!!S.rev.title;
+  var h='<h2>4. Clearly state the takeaway</h2>'+panel(4)+
+    '<p class="muted">Choose the best chart title for this figure on a slide.</p><div class="fig"><p class="label">Figure '+((S.aud==="peer"||S.aud==="pm")?"A":"C")+'</p><p style="margin-bottom:6px;font-weight:600;color:var(--muted)">Chart title: ?</p>'+((S.aud==="peer"||S.aud==="pm")?figA():figC())+'</div><div class="pickgrid">'+
+    TITLES.map(function(o){
+      var cls="pick"+(S.ctitle===o.id?" sel":"")+(done&&o.ok?" fit":"");
+      return '<button class="'+cls+'" data-a="ctitle" data-v="'+o.id+'"'+(done?" disabled":"")+'><span class="badge mono">'+o.id+'</span><span>'+o.t+(done?'<br><span class="muted" style="font-size:.88rem">'+(o.ok?"Best. ":"")+o.why+'</span>':"")+'</span></button>';
+    }).join("")+'</div>';
+  if(done) h+='<div class="reveal note"><p>A title that states the result lets the audience take the point before you say a word. The title says it and the chart shows it. Used well, redundancy helps your audience remember the main message.</p></div><button class="btn" data-a="go" data-v="fluff">Next: cut the text</button>';
+  return h;
+}
+
+function vFluff(){
+  var done=!!S.rev.fluff, aud=S.aud, a=AUD[aud];
+  var left=CHIPS.reduce(function(n,c){return S.struck.indexOf(c.id)>=0?n:n+wc(c.t);},0);
+  var chips=CHIPS.map(function(c){
+    var cut=S.struck.indexOf(c.id)>=0, kd=kind(c,aud), cls="tok";
+    if(cut) cls+=" cut";
+    if(done){
+      if(kd==="f") cls+= cut?" ok":" miss";
+      else if(kd==="n") cls+= cut?" lost":" ok";
+      else cls+= cut?" ok":" opt";
+    }
+    return '<span class="'+cls+'" role="button" tabindex="'+(done?-1:0)+'" data-a="strike" data-v="'+c.id+'"'+(done?' aria-disabled="true"':'')+' aria-pressed="'+cut+'">'+esc(c.t)+'</span>';
+  }).join(" ");
+  var h='<h2>5. Cut what they don’t need</h2>'+panel(5)+
+    '<p class="muted">Tap a phrase to strike it out. Keep what this audience needs to know or decide. Cut the rest.</p>'+audCard()+
+    '<div class="card"><p class="para">'+chips+'</p><p class="mono muted">'+left+' of '+TOTAL_WORDS+' words kept</p></div>';
+  if(!done){
+    h+='<button class="btn" data-a="checkFluff">Check my cut</button>';
+  } else {
+    var st=fluffStats(S.struck,aud);
+    var mine=CHIPS.filter(function(c){return S.struck.indexOf(c.id)<0;}).map(function(c){return c.t;}).join(" ").replace(/\s+/g," ");
+    var model=CHIPS.filter(function(c){return kind(c,aud)==="n";}).map(function(c){return c.t;}).join(" ").replace(/\s+/g," ");
+    h+='<div class="legend"><span><i style="background:var(--warn-soft);border-bottom:2px solid var(--warn)"></i>Filler kept, or needed text cut</span><span><i style="border-bottom:2px solid var(--accent)"></i>Good call</span><span><i style="border-bottom:2px dashed var(--muted)"></i>Kept, but optional for this audience</span></div>'+
+      '<div class="reveal"><h3>Filler cut: '+st.fillerCut+' of '+st.fillerN+'. Needed phrases kept: '+st.needKept+' of '+st.needN+'.</h3>'+
+      '<p>'+(st.optKept?st.optKept+' kept phrase'+(st.optKept>1?"s are":" is")+" optional for a "+a.name.toLowerCase()+". ":"")+'Fluff is relative to the reader: the same sentence is essential for one audience and clutter for another.</p>'+
+      '<p class="label">Your version ('+wc(mine)+' words)</p><p>'+(mine?esc(cap(mine)):"Nothing left.")+'</p>'+
+      '<p class="label">A cut for this audience ('+wc(model)+' words)</p><p>'+esc(cap(model))+'</p></div>'+
+      '<button class="btn" data-a="go" data-v="recap">Next: the approach</button>';
+  }
+  return h;
+}
+function fluffStats(struck,aud){
+  var r={fillerN:0,fillerCut:0,needN:0,needKept:0,optKept:0};
+  CHIPS.forEach(function(c){
+    var kd=kind(c,aud), cut=struck.indexOf(c.id)>=0;
+    if(kd==="f"){r.fillerN++; if(cut) r.fillerCut++;}
+    else if(kd==="n"){r.needN++; if(!cut) r.needKept++;}
+    else if(!cut) r.optKept++;
+  });
+  return r;
+}
+
+function vRecap(){
+  return '<h1>The approach</h1><p class="muted">Five habits that put the audience first. The same finding gets a different message for each audience.</p>'+
+    PRIN.map(function(p){ return '<section class="card"><div style="display:flex;gap:12px;align-items:flex-start"><span class="badge">'+p.n+'</span><div style="min-width:0"><strong>'+p.name+'</strong><p class="muted">'+p.line+'</p></div></div></section>'; }).join("")+
+    '<div class="reveal note"><h3>The audience decides the structure.</h3></div><button class="btn" data-a="go" data-v="results">See group results</button>';
+}
+
+function vResults(){
+  var rows=S.all.slice();
+  if(!S.dbOn){ rows=S.aud && Object.keys(S.rev).length ? [doc()] : []; }
+  var by={}; AUD_KEYS.forEach(function(k){by[k]=rows.filter(function(r){return r.aud===k;});});
+  var h='<h1>Group results</h1><p class="muted">'+rows.length+' response'+(rows.length===1?"":"s")+'. A response is saved when someone checks their first answer. No names are collected. Counts, not percentages, because each audience group is small.</p>';
+  if(!S.dbOn) h+='<div class="reveal note"><p>Shared results are not available in this view, so only your own answers are shown.</p></div>';
+  h+='<div class="card"><h3>Who got which audience</h3><div class="tblwrap"><table><tr>'+AUD_KEYS.map(function(k){return '<th>'+AUD[k].name+'</th>';}).join("")+'</tr><tr>'+AUD_KEYS.map(function(k){return '<td class="n">'+by[k].length+'</td>';}).join("")+'</tr></table></div></div>';
+  h+='<div class="card"><h3>1. Categories marked as needed</h3><p class="muted">Number of people in each audience who marked the category. Shaded = needed for that audience.</p><div class="tblwrap"><table><tr><th>Category</th>'+AUD_KEYS.map(function(k){return '<th>'+AUD[k].name.split(" ")[0]+'</th>';}).join("")+'</tr>'+
+    KEYS.map(function(c){
+      return '<tr><td><strong class="mono">'+c+'</strong> '+CARDS[c].t+'</td>'+AUD_KEYS.map(function(k){
+        var n=by[k].filter(function(r){return (r.sel||[]).indexOf(c)>=0;}).length, tot=by[k].filter(function(r){return (r.sel||[]).length;}).length;
+        return '<td class="n'+(AUD[k].order.indexOf(c)>=0?" sug":"")+'">'+n+'/'+tot+'</td>';
+      }).join("")+'</tr>';
+    }).join("")+'</table></div></div>';
+  h+='<div class="card"><h3>3. Figure each audience chose</h3><p class="muted">Figure D has a deliberate error and is never the right answer.</p><div class="tblwrap"><table><tr><th>Audience</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>'+
+    AUD_KEYS.map(function(k){
+      var f=function(v){return by[k].filter(function(r){return r.pick===v;}).length;};
+      return '<tr><td>'+AUD[k].name+'</td><td class="n">'+f("A")+'</td><td class="n">'+f("B")+'</td><td class="n">'+f("C")+'</td><td class="n">'+f("D")+'</td></tr>';
+    }).join("")+'</table></div></div>';
+  h+='<div class="card"><h3>4. Chart title picked</h3><div class="tblwrap"><table><tr>'+TITLES.map(function(o){return '<th>'+o.id+(o.ok?" (best)":"")+'</th>';}).join("")+'</tr><tr>'+
+    TITLES.map(function(o){return '<td class="n">'+rows.filter(function(r){return r.ctitle===o.id;}).length+'</td>';}).join("")+'</tr></table></div></div>';
+  h+='<div class="card"><h3>5. Text cutting, average per person</h3><div class="tblwrap"><table><tr><th>Audience</th><th>Filler cut</th><th>Needed kept</th></tr>'+
+    AUD_KEYS.map(function(k){
+      var rs=by[k].filter(function(r){return r.rev&&r.rev.fluff;});
+      if(!rs.length) return '<tr><td>'+AUD[k].name+'</td><td class="n">–</td><td class="n">–</td></tr>';
+      var fc=0,nk=0,st; rs.forEach(function(r){st=fluffStats(r.struck||[],k); fc+=st.fillerCut; nk+=st.needKept;});
+      st=fluffStats([],k);
+      return '<tr><td>'+AUD[k].name+'</td><td class="n">'+(fc/rs.length).toFixed(1)+' of '+st.fillerN+'</td><td class="n">'+(nk/rs.length).toFixed(1)+' of '+st.needN+'</td></tr>';
+    }).join("")+'</table></div></div>';
+  h+='<div class="card"><h3>Sources</h3><p class="cite"><a href="https://doi.org/10.1073/pnas.1213273110" target="_blank" rel="noopener">Fischhoff B. (2013). The sciences of science communication. PNAS 110(Suppl 3):14033–14039.</a><br><a href="https://www.ijee.ie/articles/Vol29-6/23_ijee2791ns.pdf" target="_blank" rel="noopener">Garner J., Alley M. (2013). How the design of presentation slides affects audience comprehension. Int. J. Eng. Educ. 29(6):1564–1579.</a><br><a href="https://doi.org/10.1371/journal.pcbi.1003833" target="_blank" rel="noopener">Rougier N., Droettboom M., Bourne P. (2014). Ten simple rules for better figures. PLOS Comput. Biol. 10(9):e1003833.</a></p></div>';
+  return h;
+}
+
+/* ---------- render + events ---------- */
+var VIEWS={intro:vIntro,sel:vSel,order:vOrder,figures:vFigures,title:vTitle,fluff:vFluff,recap:vRecap,results:vResults};
+function render(){
+  document.getElementById("app").innerHTML=header()+VIEWS[S.step]();
+}
+document.addEventListener("input",function(e){
+  var n=e.target&&e.target.dataset&&e.target.dataset.note;
+  if(n) S.notes[n]=e.target.value;
+});
+document.addEventListener("keydown",function(e){
+  var t=e.target;
+  if((e.key==="Enter"||e.key===" ") && t && t.getAttribute && t.getAttribute("role")==="button" && t.dataset && t.dataset.a){ e.preventDefault(); t.click(); }
+});
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-a]"); if(!t||t.disabled||t.getAttribute("aria-disabled")==="true") return;
+  var a=t.dataset.a, v=t.dataset.v;
+  if(a==="go"){ go(v); return; }
+  if(a==="back"){ back(); return; }
+  if(a==="assign"){
+    if(!S.aud){ S.aud=AUD_KEYS[Math.floor(Math.random()*AUD_KEYS.length)]; store("aud",S.aud); }
+    else restart();
+    render(); window.scrollTo(0,0);
+    var c=document.querySelector(".aud"); if(c&&c.scrollIntoView){ c.scrollIntoView({block:"center",behavior:(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)?"auto":"smooth"}); }
+    return;
+  }
+  if(a==="clearAll"){
+    if(!S.confirmClear){ S.confirmClear=true; S.cleared=false; render(); setTimeout(function(){ if(S.confirmClear){ S.confirmClear=false; if(S.step==="intro") render(); } },5000); return; }
+    S.confirmClear=false; S.all=[]; S.saved="";
+    clearAll().then(function(){ S.cleared=true; if(S.step==="intro") render(); }).catch(function(){ S.cleared=false; });
+    S.cleared=true; render(); return;
+  }
+  if(a==="reset"){
+    var st=S.step;
+    if(st==="sel"){ S.sel=[]; delete S.rev.sel; }
+    else if(st==="order"){ S.order=AUD[S.aud].order.slice(); S.oi=true; delete S.rev.order; }
+    else if(st==="figures"){ S.pick=""; S.notes={A:"",B:"",C:"",D:""}; delete S.rev.figures; }
+    else if(st==="title"){ S.ctitle=""; delete S.rev.title; }
+    else if(st==="fluff"){ S.struck=[]; delete S.rev.fluff; }
+    if(Object.keys(S.rev).length){ save(); }
+    else if(db){ var rid=S.rid; S.saved=""; writing=writing.then(function(){ return db.doc("responses/"+rid).delete(); }).catch(function(){}); }
+    render(); window.scrollTo(0,0); return;
+  }
+  if(a==="sel"){ var i=S.sel.indexOf(v); if(i>=0) S.sel.splice(i,1); else S.sel.push(v); render(); return; }
+  if(a==="checkSel"){ S.rev.sel=true; save(); render(); return; }
+  if(a==="mv"){ var p=S.order.indexOf(v), q=p+(+t.dataset.d); if(p>=0&&q>=0&&q<S.order.length){ var x=S.order[p]; S.order[p]=S.order[q]; S.order[q]=x; } render(); return; }
+  if(a==="checkOrder"){ S.rev.order=true; save(); render(); return; }
+    if(a==="pick"){ S.pick=v; render(); return; }
+  if(a==="checkFig"){ S.rev.figures=true; save(); render(); return; }
+  if(a==="ctitle"){ S.ctitle=v; S.rev.title=true; save(); render(); return; }
+  if(a==="strike"){ var id=+v, j=S.struck.indexOf(id); if(j>=0) S.struck.splice(j,1); else S.struck.push(id); render(); return; }
+  if(a==="checkFluff"){ S.rev.fluff=true; save(); render(); return; }
+});
+render();
+})();
+</script>
+
+</html>
